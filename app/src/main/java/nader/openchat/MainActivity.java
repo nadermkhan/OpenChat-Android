@@ -37,38 +37,41 @@ public class MainActivity extends AppCompatActivity {
 	}
 	
 	private void registerUser() {
-		String deviceId = deviceIdEditText.getText().toString().trim();
-		
-		if (deviceId.isEmpty()) {
-			Toast.makeText(MainActivity.this, "Device ID is required", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		
-		ApiService apiService = RetrofitClient.getApiService();
-		apiService.createUser(deviceId).enqueue(new Callback<Void>() {
-@Override
-public void onResponse(Call<Void> call, Response<Void> response) {
-    if (response.isSuccessful()) {
-        Log.d("API_RESPONSE", "Success: " + response.body()); 
-        SharedPrefManager.getInstance(MainActivity.this).saveDeviceId(deviceId);
-        startActivity(new Intent(MainActivity.this, ChatActivity.class));
-        finish();
-    } else {
-        try {
-            Log.d("API_RESPONSE", "Failed: " + response.errorBody().string());
-        } catch (IOException e) {
-            Log.e("API_RESPONSE", "Error reading error body", e);
-        }
-        Toast.makeText(MainActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+    String deviceId = deviceIdEditText.getText().toString().trim();
+
+    if (deviceId.isEmpty()) {
+        Toast.makeText(MainActivity.this, "Device ID is required", Toast.LENGTH_SHORT).show();
+        return;
     }
+
+    // Create UserCreateRequest object
+    UserCreateRequest request = new UserCreateRequest(deviceId);
+
+    ApiService apiService = RetrofitClient.getApiService();
+    apiService.createUser(request).enqueue(new Callback<Void>() {
+        @Override
+        public void onResponse(Call<Void> call, Response<Void> response) {
+            if (response.isSuccessful()) {
+                Log.d("API_RESPONSE", "Success: " + response.body()); 
+                SharedPrefManager.getInstance(MainActivity.this).saveDeviceId(deviceId);
+                startActivity(new Intent(MainActivity.this, ChatActivity.class));
+                finish();
+            } else {
+                try {
+                    Log.d("API_RESPONSE", "Failed: " + response.errorBody().string());
+                } catch (IOException e) {
+                    Log.e("API_RESPONSE", "Error reading error body", e);
+                }
+                Toast.makeText(MainActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<Void> call, Throwable t) {
+            Log.e("API_ERROR", "Network request failed", t); // Logs the error with stack trace
+            Toast.makeText(MainActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+        }
+    });
 }
 
-			
-			@Override
-			public void onFailure(Call<Void> call, Throwable t) {
-			  Log.e("API_ERROR", "Network request failed", t); // Logs the error with stack trace
-				Toast.makeText(MainActivity.this, "Network error", Toast.LENGTH_SHORT).show();
-			}
-		});
-	}
 }
