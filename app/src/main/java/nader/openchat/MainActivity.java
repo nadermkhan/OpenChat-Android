@@ -45,16 +45,23 @@ public class MainActivity extends AppCompatActivity {
 		
 		ApiService apiService = RetrofitClient.getApiService();
 		apiService.createUser(deviceId).enqueue(new Callback<Void>() {
-			@Override
-			public void onResponse(Call<Void> call, Response<Void> response) {
-				if (response.isSuccessful()) {
-					SharedPrefManager.getInstance(MainActivity.this).saveDeviceId(deviceId);
-					startActivity(new Intent(MainActivity.this, ChatActivity.class));
-					finish();
-					} else {
-					Toast.makeText(MainActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
-				}
-			}
+@Override
+public void onResponse(Call<Void> call, Response<Void> response) {
+    if (response.isSuccessful()) {
+        Log.d("API_RESPONSE", "Success: " + response.body()); 
+        SharedPrefManager.getInstance(MainActivity.this).saveDeviceId(deviceId);
+        startActivity(new Intent(MainActivity.this, ChatActivity.class));
+        finish();
+    } else {
+        try {
+            Log.d("API_RESPONSE", "Failed: " + response.errorBody().string());
+        } catch (IOException e) {
+            Log.e("API_RESPONSE", "Error reading error body", e);
+        }
+        Toast.makeText(MainActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+    }
+}
+
 			
 			@Override
 			public void onFailure(Call<Void> call, Throwable t) {
