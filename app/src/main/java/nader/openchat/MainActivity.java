@@ -21,6 +21,8 @@ import retrofit2.Response;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
+  
+  private static final String PRODUCT_KEY_REGEX = "^[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}$";
 	
 	private EditText deviceIdEditText;
 	private Button registerButton;
@@ -36,11 +38,22 @@ public class MainActivity extends AppCompatActivity {
 		registerButton.setOnClickListener(v -> registerUser());
 	}
 	
+	//VALID DEVICE KEY CHECK
+	
+	public static boolean isValidKey(String productKey) {
+        if (productKey == null) {
+            return false;
+        }
+        return productKey.matches(PRODUCT_KEY_REGEX);
+    }
+
+	
 	private void registerUser() {
     String deviceId = deviceIdEditText.getText().toString().trim();
+    
 
-    if (deviceId.isEmpty()) {
-        Toast.makeText(MainActivity.this, "Device ID is required", Toast.LENGTH_SHORT).show();
+    if (deviceId.isEmpty() || !isValidKey(deviceId)) {
+        Toast.makeText(MainActivity.this, "Invalid Device ID", Toast.LENGTH_SHORT).show();
         return;
     }
 
