@@ -8,9 +8,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import nader.openchat.R;
-import nader.openchat.network.ApiService;
-import nader.openchat.network.RetrofitClient;
-import nader.openchat.utils.SharedPrefManager;
+import nader.openchat.ApiService;
+import nader.openchat.RetrofitClient;
+import nader.openchat.SharedPrefManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
