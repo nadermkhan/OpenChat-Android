@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import nader.openchat.NaderUIDGenerator;
 import nader.openchat.R;
 import nader.openchat.ApiService;
 import nader.openchat.RetrofitClient;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 		
 		deviceIdEditText = findViewById(R.id.deviceIdEditText);
 		registerButton = findViewById(R.id.registerButton);
-		
+		deviceIdEditText.setText(NaderUIDGenerator.getDeviceUID(MainActivity.this));
 		registerButton.setOnClickListener(v -> registerUser());
 	}
 	
