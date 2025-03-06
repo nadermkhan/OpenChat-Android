@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 	
-	private static final String BASE_URL = "http://your-api-base-url";
+	private static final String BASE_URL = "https://cymasas.com";
 	private static Retrofit retrofit;
 	
 	public static ApiService getApiService() {
