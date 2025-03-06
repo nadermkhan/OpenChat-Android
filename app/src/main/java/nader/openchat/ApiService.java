@@ -15,7 +15,7 @@ import retrofit2.http.Path;
 public interface ApiService {
 	
 	@POST("/users")
-	Call<Void> createUser(@Body String device_id);
+	Call<Void> createUser(@Body UserCreateRequest userCreateRequest);
 	
 	@GET("/users/by-device/{device_id}")
 	Call<User> getUserDetails(@Path("device_id") String deviceId);
