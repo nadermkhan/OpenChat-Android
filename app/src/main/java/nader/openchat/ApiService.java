@@ -21,7 +21,7 @@ public interface ApiService {
 	Call<User> getUserDetails(@Path("device_id") String deviceId);
 	
 	@POST("/messages")
-	Call<Void> sendMessage(@Body String message);
+	Call<Void> sendMessage(@Body SendMessageRequest request);
 	
 	@GET("/messages")
 	Call<List<Message>> getRecentMessages();

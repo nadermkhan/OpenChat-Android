@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="24dp"
-    tools:context=".activities.UserProfileActivity">
+    tools:context=".UserProfileActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profileImage"
