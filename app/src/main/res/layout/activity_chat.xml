@@ -5,43 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="8dp"
     tools:context=".ChatActivity">
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_message" />
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:orientation="horizontal">
-
-<com.google.android.material.textfield.TextInputLayout
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:hint="Type a message"
-    android:backgroundTint="#EFEFEF"
-    app:boxBackgroundMode="none">
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/messageEditText"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#1064D2"/>
-</com.google.android.material.textfield.TextInputLayout>
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:elevation="4dp"
+        android:gravity="center_vertical">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:boxBackgroundMode="none"
+            android:hint="Type a message"
+            android:background="@drawable/input_bg">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/sendButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send"
-        android:layout_marginStart="8dp"
-        style="@style/Widget.Material3.Button" />
-</LinearLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/messageEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:paddingVertical="8dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="#0078FF"
+            android:cornerRadius="50dp"
+            app:icon="@drawable/ic_send"
+            app:iconTint="@color/white"
+            style="@style/Widget.Material3.Button.Icon" />
+    </LinearLayout>
 
 </LinearLayout>
