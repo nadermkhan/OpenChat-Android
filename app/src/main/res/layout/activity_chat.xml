@@ -20,22 +20,20 @@
     android:padding="8dp"
     android:orientation="horizontal">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:hint="Type a message"
-        android:backgroundTint="#EFEFEF">
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:hint="Type a message"
+    android:backgroundTint="#EFEFEF"
+    app:boxBackgroundMode="none">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/messageEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#1064D2"
-            android:drawableLeft="@drawable/ic_warning"
-            android:drawableRight="@drawable/ic_send"
-            android:drawableTint="#1064D2"/>
-    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/messageEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#1064D2"/>
+</com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/sendButton"
