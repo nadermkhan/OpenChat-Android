@@ -31,31 +31,24 @@
             android:layout_height="48dp"
             android:layout_marginEnd="10dp"
             android:backgroundTint="@null" 
-            android:foreground="?attr/selectableItemBackgroundBorderless"
             app:icon="@drawable/ic_policy"
-            app:iconTint="#EEEEEE"
+            app:iconTint="#0078FF"
             style="@style/Widget.Material3.Button.Icon" />
-            
-   <com.google.android.material.textfield.TextInputLayout
+ <EditText
+    android:id="@+id/messageEditText"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_weight="1"
-    app:boxBackgroundMode="none"
-    android:background="@drawable/input_bg">
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/messageEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:paddingVertical="8dp"
-        android:maxLines="5"  
-        android:minLines="1" 
-        android:inputType="textMultiLine" 
-        android:textCursorDrawable="@drawable/nader_cursor"
-        android:scrollHorizontally="false"/> 
-</com.google.android.material.textfield.TextInputLayout>
+    android:background="@drawable/input_bg"
+    android:textColor="#000000"
+    android:textSize="16sp"
+    android:paddingVertical="8dp"
+    android:maxLines="5"
+    android:minLines="1"
+    android:inputType="textMultiLine"
+    android:textCursorDrawable="@drawable/nader_cursor"
+    android:scrollHorizontally="false"
+    android:hint="Aa"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sendButton"
