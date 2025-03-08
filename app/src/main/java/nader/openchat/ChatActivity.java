@@ -28,7 +28,7 @@ public class ChatActivity extends AppCompatActivity {
     private MessageAdapter messageAdapter;
     private List<Message> messageList;
     private EditText messageEditText;
-    private Button sendButton;
+    private Button sendButton, policyButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         messageEditText = findViewById(R.id.messageEditText);
         sendButton = findViewById(R.id.sendButton);
+        policyButton = findViewById(R.id.policyButton);
 
         // Retrieve deviceId from shared preferences
         String deviceid = SharedPrefManager.getInstance(ChatActivity.this).getDeviceId();
@@ -59,6 +60,16 @@ public class ChatActivity extends AppCompatActivity {
 
         // Send message button click listener
         sendButton.setOnClickListener(v -> sendMessage());
+        
+        //Update: While typing hide that policy btn
+        messageEditText.setOnFocusChangeListener((v, hasFocus) -> {
+        if (hasFocus) {
+            policyButton.setVisibility(View.GONE);
+        } else {
+            policyButton.setVisibility(View.VISIBLE);
+        }
+    });
+    
     }
 
     private void fetchMessages() {
