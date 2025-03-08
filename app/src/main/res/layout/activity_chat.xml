@@ -30,7 +30,8 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="10dp"
-            android:backgroundTint="@null" 
+            android:backgroundTint="@android:color/transparent"
+            android:background="@android:color/transparent"
             app:icon="@drawable/ic_policy"
             app:iconTint="#0078FF"
             style="@style/Widget.Material3.Button.Icon" />

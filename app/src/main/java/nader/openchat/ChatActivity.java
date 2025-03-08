@@ -1,5 +1,9 @@
 package nader.openchat;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +33,22 @@ public class ChatActivity extends AppCompatActivity {
     private List<Message> messageList;
     private EditText messageEditText;
     private Button sendButton, policyButton;
+    private String deviceid;
+
+    private BroadcastReceiver messageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if ("NEW_MESSAGES".equals(intent.getAction())) {
+                List<Message> newMessages = intent.getParcelableArrayListExtra("messages");
+                if (newMessages != null) {
+                    messageList.clear();
+                    messageList.addAll(newMessages);
+                    messageAdapter.notifyDataSetChanged();
+                    recyclerView.smoothScrollToPosition(messageList.size() - 1);
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,35 +61,42 @@ public class ChatActivity extends AppCompatActivity {
         policyButton = findViewById(R.id.policyButton);
 
         // Retrieve deviceId from shared preferences
-        String deviceid = SharedPrefManager.getInstance(ChatActivity.this).getDeviceId();
+        deviceid = SharedPrefManager.getInstance(ChatActivity.this).getDeviceId();
         Log.d("ChatActivity Device ID : ", deviceid);
 
         // Check if the deviceId is null
         if (deviceid == null || deviceid.isEmpty()) {
             Toast.makeText(ChatActivity.this, "Device ID is missing", Toast.LENGTH_SHORT).show();
-            return; // Stop further execution if no deviceId is available
+            return;
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize the adapter with an empty message list and deviceId
-        messageAdapter = new MessageAdapter(new ArrayList<Message>(), deviceid, recyclerView);
+        messageAdapter = new MessageAdapter(new ArrayList<>(), deviceid, recyclerView);
         recyclerView.setAdapter(messageAdapter);
 
         fetchMessages(); // Fetch the messages on activity creation
 
-        // Send message button click listener
         sendButton.setOnClickListener(v -> sendMessage());
-        
-        //Update: While typing hide that policy btn
+
+        // Hide policy button while typing
         messageEditText.setOnFocusChangeListener((v, hasFocus) -> {
-        if (hasFocus) {
-            policyButton.setVisibility(View.GONE);
-        } else {
-            policyButton.setVisibility(View.VISIBLE);
-        }
-    });
-    
+            policyButton.setVisibility(hasFocus ? View.GONE : View.VISIBLE);
+        });
+
+        // Start Background Service
+        startService(new Intent(this, MessageFetchService.class));
+
+        // Register BroadcastReceiver
+        registerReceiver(messageReceiver, new IntentFilter("NEW_MESSAGES"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(messageReceiver);
+        stopService(new Intent(this, MessageFetchService.class)); // Stop service when chat closes
     }
 
     private void fetchMessages() {
@@ -79,8 +106,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
                 if (response.isSuccessful()) {
                     messageList = response.body();
-                    Log.d("Fetched Messages", response.body().toString()); // Log the fetched messages
-                    messageAdapter.setMessages(messageList); // Update the adapter
+                    messageAdapter.setMessages(messageList);
                 } else {
                     Toast.makeText(ChatActivity.this, "Failed to fetch messages", Toast.LENGTH_SHORT).show();
                 }
@@ -95,25 +121,12 @@ public class ChatActivity extends AppCompatActivity {
 
     private void sendMessage() {
         String messageText = messageEditText.getText().toString().trim();
-
         if (messageText.isEmpty()) {
             Toast.makeText(ChatActivity.this, "Message cannot be empty", Toast.LENGTH_SHORT).show();
-            return; // Do not send the message if it is empty
+            return;
         }
 
-        // Retrieve deviceId from SharedPreferences
-        String deviceid = SharedPrefManager.getInstance(ChatActivity.this).getDeviceId();
-
-        // Ensure deviceId is not null or empty before proceeding
-        if (deviceid == null || deviceid.isEmpty()) {
-            Toast.makeText(ChatActivity.this, "Device ID is missing", Toast.LENGTH_SHORT).show();
-            return; // Stop further execution if deviceId is missing
-        }
-
-        // Create a SendMessageRequest with deviceId and message
         SendMessageRequest request = new SendMessageRequest(deviceid, messageText);
-
-        // Send the message via API
         ApiService apiService = RetrofitClient.getApiService();
         apiService.sendMessage(request).enqueue(new Callback<Void>() {
             @Override
@@ -122,12 +135,6 @@ public class ChatActivity extends AppCompatActivity {
                     fetchMessages(); // Fetch messages again after sending a new one
                     messageEditText.setText(""); // Clear the message input field
                 } else {
-                    try {
-                        // Log error response body if the message sending fails
-                        Log.d("Response Body", response.errorBody() != null ? response.errorBody().string() : "No response body");
-                    } catch (IOException e) {
-                        Log.e("Response Body", "Error reading error body", e);
-                    }
                     Toast.makeText(ChatActivity.this, "Failed to send message", Toast.LENGTH_SHORT).show();
                 }
             }
