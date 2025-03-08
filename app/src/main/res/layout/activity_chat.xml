@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="#FFFFFF"
     android:padding="8dp"
     tools:context=".ChatActivity">
     <androidx.recyclerview.widget.RecyclerView
@@ -46,9 +46,9 @@
             android:layout_height="48dp"
             android:layout_marginStart="10dp"
             android:backgroundTint="#0078FF"
-            android:cornerRadius="50dp"
+            app:cornerRadius="50dp"
             app:icon="@drawable/ic_send"
-            app:iconTint="@color/white"
+            app:iconTint="#FFFFFF"
             style="@style/Widget.Material3.Button.Icon" />
     </LinearLayout>
 
