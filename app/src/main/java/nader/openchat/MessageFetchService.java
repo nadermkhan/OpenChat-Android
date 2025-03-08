@@ -9,7 +9,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-
+import java.util.ArrayList;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -72,7 +72,7 @@ public class MessageFetchService extends Service {
         return new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Chat Service Running")
                 .setContentText("Fetching new messages...")
-                .setSmallIcon(R.drawable.ic_message)
+                .setSmallIcon(R.drawable.ic_send)
                 .build();
     }
 

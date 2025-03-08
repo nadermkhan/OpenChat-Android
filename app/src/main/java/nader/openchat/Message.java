@@ -1,70 +1,110 @@
 package nader.openchat;
 
-public class Message {
-	
-	private int id;
-	private int userId;  // Change this to match "user_id" in JSON
-	private String device_id;
-	private String username;
-	private String message;  
-	private String created_at; 
-	
-	// Constructor
-	public Message(int id, int userId, String device_id, String username, String message, String created_at) {
-		this.id = id;
-		this.userId = userId;
-		this.device_id = device_id;
-		this.username = username;
-		this.message = message;
-		this.created_at = created_at;  // Corrected parameter name
-	}
-	
-	// Getters and Setters
-	public int getId() {
-		return id;
-	}
+import android.os.Parcel;
+import android.os.Parcelable;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+public class Message implements Parcelable {
 
-	public int getUserId() {
-		return userId;
-	}
+    private int id;
+    private int userId;
+    private String device_id;
+    private String username;
+    private String message;
+    private String created_at;
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    // Constructor
+    public Message(int id, int userId, String device_id, String username, String message, String created_at) {
+        this.id = id;
+        this.userId = userId;
+        this.device_id = device_id;
+        this.username = username;
+        this.message = message;
+        this.created_at = created_at;
+    }
 
-	public String getDeviceId() {
-		return this.device_id;
-	}
+    // Parcelable constructor
+    protected Message(Parcel in) {
+        id = in.readInt();
+        userId = in.readInt();
+        device_id = in.readString();
+        username = in.readString();
+        message = in.readString();
+        created_at = in.readString();
+    }
 
-	public void setDeviceId(String deviceId) {
-		this.device_id = deviceId;
-	}
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(userId);
+        dest.writeString(device_id);
+        dest.writeString(username);
+        dest.writeString(message);
+        dest.writeString(created_at);
+    }
 
-	public String getUsername() {
-		return this.username;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public static final Creator<Message> CREATOR = new Creator<Message>() {
+        @Override
+        public Message createFromParcel(Parcel in) {
+            return new Message(in);
+        }
 
-	public String getMessage() {
-		return message;
-	}
+        @Override
+        public Message[] newArray(int size) {
+            return new Message[size];
+        }
+    };
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
 
-	public String getCreatedAt() {
-		return created_at;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setCreatedAt(String createdAt) {
-		this.created_at = createdAt;
-	}
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getDeviceId() {
+        return this.device_id;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.device_id = deviceId;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getCreatedAt() {
+        return created_at;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.created_at = createdAt;
+    }
 }
